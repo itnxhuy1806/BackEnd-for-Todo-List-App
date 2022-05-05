@@ -15,8 +15,13 @@ router.post('/token', requiresAuth('refreshToken'), asyncWrapper(async (req, res
         return res.status(401).send({ success: false, message: 'You must login in first' })
     }
     const payload = {...jwt}
+    delete payload.iat
+    console.log(payload)
     const newAccessToken = JWTUtils.generateAccessToken(payload)
     return res.status(200).send({ success: true, data: { accessToken: newAccessToken } })
+}))
+router.get('/checktoken', requiresAuth(), asyncWrapper(async (req, res) => {
+    return res.status(200).send({ success: true})
 }))
 
 export default router

@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import models from '../../models';
 import asyncWrapper from '../../utils/asyncWrapper';
-import JWTUtils from '../../utils/jwt-utils';
 import requiresAuth from '../../middlewares/requiresAuth';
 
 const router = Router();
@@ -19,8 +18,8 @@ router.post('/create', requiresAuth(), asyncWrapper(async (req, res) => {
     if (todo) {
         return res.status(401).send({ success: false, message: 'TodoList name already exists, please chose another name' })
     }
-    await TodoList.create({ name, UserId })
-    return res.status(200).send({ success: true, message: 'Added successfully' })
+    let newTodo = await TodoList.create({ name, UserId })
+    return res.status(200).send({ success: true, message: 'Added successfully', data: newTodo })
 }))
 
 router.post('/detail', requiresAuth(), asyncWrapper(async (req, res) => {
@@ -49,7 +48,7 @@ router.post('/delete', requiresAuth(), asyncWrapper(async (req, res) => {
         return res.status(401).send({ success: false, message: 'Todolist not found' })
     }
     await todo.destroy()
-    return res.status(200).send({ success: true, message: 'Deleted successfully' })
+    return res.status(200).send({ success: true, message: 'Deleted successfully'})
 }))
 
 export default router

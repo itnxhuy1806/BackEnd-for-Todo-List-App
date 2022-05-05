@@ -34,12 +34,19 @@
     "supertest": "^6.2.2"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
+    "body-parser": "^1.20.0",
     "cls-hooked": "^4.2.2",
+    "consolidate": "^0.16.0",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
+    "fs": "^0.0.1-security",
+    "handlebars": "^4.7.7",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
+    "path": "^0.12.7",
     "pg": "^8.7.3",
     "sequelize": "^6.19.0",
     "sequelize-cli": "^6.4.1"

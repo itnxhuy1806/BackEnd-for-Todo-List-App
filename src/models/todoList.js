@@ -9,11 +9,6 @@ export default (sequelize) => {
                 onUpdate: 'CASCADE',
             })
         }
-        static async createNewTodoList({ name }) {
-            return sequelize.transaction(() => {
-                return TodoList.create({ name, Userid})
-            });
-        }
     }
     TodoList.init(
         {

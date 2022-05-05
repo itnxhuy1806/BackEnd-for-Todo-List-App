@@ -8,12 +8,6 @@ export default (sequelize) => {
                 onUpdate: 'CASCADE',
             })
         }
-        static async createNewTask({ content, idTodoList }) {
-            return sequelize.transaction(() => {
-                return Task.create({ content });
-                // return Task.create({ content, idTodoList }, { include: [Task.idTodoList] });
-            });
-        }
     }
     Task.init(
         {
@@ -26,6 +20,9 @@ export default (sequelize) => {
                     },
                 },
             },
+            checked:{
+                type: DataTypes.BOOLEAN
+            }
         },
         {
             sequelize,

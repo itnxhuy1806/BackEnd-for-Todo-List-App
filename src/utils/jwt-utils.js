@@ -3,7 +3,7 @@ import environment from '../config/environment';
 
 export default class JWTUtils {
   static generateAccessToken(payload, options = {}) {
-    const { expiresIn = '1d' } = options;
+    const { expiresIn = '3000' } = options;
     return jwt.sign(payload, environment.jwtAccessTokenSecret, { expiresIn });
   }
 

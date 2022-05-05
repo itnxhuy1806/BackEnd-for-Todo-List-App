@@ -12,6 +12,9 @@ module.exports = {
       content: {
         type: Sequelize.STRING(100),
       },
+      content: {
+        type: Sequelize.BOOLEAN,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

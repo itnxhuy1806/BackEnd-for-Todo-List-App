@@ -24,6 +24,7 @@ router.post('/', asyncWrapper(
             success: true,
             message: 'User successfully register',
             data: {
+                username,
                 accessToken,
                 refreshToken,
             }
@@ -60,6 +61,7 @@ router.post('/login', asyncWrapper(
             success: true,
             message: 'Successfully logged in',
             data: {
+                username,
                 accessToken,
                 refreshToken,
             },

@@ -1,3 +1,4 @@
-import v1Routes from './v1'
+import serverRoutes from './server'
+import clientRoutes from './client'
 
-export {v1Routes}
+export { serverRoutes, clientRoutes }
