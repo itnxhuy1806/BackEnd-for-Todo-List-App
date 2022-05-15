@@ -19,7 +19,7 @@ router.post('/', asyncWrapper(
         const payload = { id: user.id, email, username }
         const accessToken = JWTUtils.generateAccessToken(payload)
         const refreshToken = JWTUtils.generateRefreshToken(payload)
-        user.update({ refreshToken })
+        user.RefreshToken.update({token: refreshToken })
         return res.status(200).send({
             success: true,
             message: 'User successfully register',
