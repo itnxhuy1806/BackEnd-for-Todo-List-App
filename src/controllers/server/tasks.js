@@ -12,33 +12,35 @@ router.post('/create', requiresAuth(), asyncWrapper(async (req, res) => {
     if (!todo) {
         return res.status(403).send({ success: false, message: 'You do not have permission to access this todolist' })
     }
-    let task = await Task.create({ content, TodoListId, checked: false })
-    return res.status(200).send({ success: true, message: 'Added successfully', data: task })
+    Task.create({ content, TodoListId, checked: false })
+    return res.status(200).send({ success: true, message: 'Added successfully' })
 }))
 
-router.post('/update', requiresAuth(), asyncWrapper(async (req, res) => {
-    const { jwt: { id: UserId }, id, checked, TodoListId } = req.body;
+router.patch('/update/:id', requiresAuth(), asyncWrapper(async (req, res) => {
+    const { jwt: { id: UserId }, TodoListId } = req.body;
+    const id = req.params.id
     const todo = await TodoList.findOne({ where: { id: TodoListId, UserId } })
-    if (!todo) {
+    if (!todo)
         return res.status(403).send({ success: false, message: 'You do not have permission to access this todolist' })
-    }
     const task = await Task.findOne({ where: { id, TodoListId } })
-    if (!task) {
+    let { content, checked } = req.body
+    content = content !== undefined ? content : task.content
+    checked = checked !== undefined ? checked : task.checked
+    console.log(checked, content)
+    if (!task)
         return res.status(401).send({ success: false, message: 'Task not found' })
-    }
-    const updatedTask = await task.update({ checked })
-    return res.status(200).send({ success: true, message: 'Updated successfully', data: updatedTask })
+    await task.update({ content, checked })
+    return res.status(200).send({ success: true, message: 'Updated successfully' })
 }))
-router.post('/delete', requiresAuth(), asyncWrapper(async (req, res) => {
-    const { jwt: { id: UserId }, id, TodoListId } = req.body;
-    const todo = await TodoList.findOne({ where: { id: TodoListId, UserId } })
-    if (!todo) {
-        return res.status(403).send({ success: false, message: 'You do not have permission to access this todolist' })
-    }
-    const task = await Task.findOne({ where: { id, TodoListId } })
-    if (!task) {
+router.delete('/delete/:id', requiresAuth(), asyncWrapper(async (req, res) => {
+    const { jwt: { id: UserId } } = req.body;
+    const id = req.params.id
+    const task = await Task.findOne({ where: { id } })
+    if (!task)
         return res.status(401).send({ success: false, message: 'Task not found' })
-    }
+    const todo = await TodoList.findOne({ where: { id: task.TodoListId, UserId } })
+    if (!todo)
+        return res.status(403).send({ success: false, message: 'You do not have permission to access this todolist' })
     await task.destroy()
     return res.status(200).send({ success: true, message: 'Deleted successfully' })
 }))
