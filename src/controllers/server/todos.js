@@ -6,7 +6,7 @@ import requiresAuth from '../../middlewares/requiresAuth';
 const router = Router();
 const { TodoList, Task } = models;
 
-router.post('/all', requiresAuth(), asyncWrapper(async (req, res) => {
+router.get('/all', requiresAuth(), asyncWrapper(async (req, res) => {
     const { jwt: { id: UserId } } = req.body;
     const todo = await TodoList.findAll({ where: { UserId } })
     return res.status(200).send({ success: true, data: todo })
@@ -22,8 +22,9 @@ router.post('/create', requiresAuth(), asyncWrapper(async (req, res) => {
     return res.status(200).send({ success: true, message: 'Added successfully', data: newTodo })
 }))
 
-router.post('/detail', requiresAuth(), asyncWrapper(async (req, res) => {
-    const { jwt: { id: UserId }, id } = req.body;
+router.post('/detail/:id', requiresAuth(), asyncWrapper(async (req, res) => {
+    const { jwt: { id: UserId }} = req.body;
+    const id = req.params.id
     const todo = await TodoList.findOne({ where: { id, UserId } })
     const task = await Task.findAll({ where: { TodoListId: id } })
     if (!todo) {
@@ -32,8 +33,9 @@ router.post('/detail', requiresAuth(), asyncWrapper(async (req, res) => {
     return res.status(200).send({ success: true, data: { todo, task } })
 }))
 
-router.post('/update', requiresAuth(), asyncWrapper(async (req, res) => {
-    const { jwt: { id: UserId }, id, name } = req.body;
+router.patch('/update/:id', requiresAuth(), asyncWrapper(async (req, res) => {
+    const { jwt: { id: UserId }, name } = req.body;
+    const id = req.params.id
     const todo = await TodoList.findOne({ where: { id, UserId } })
     if (!todo) {
         return res.status(401).send({ success: false, message: 'Todolist not found' })
@@ -41,8 +43,9 @@ router.post('/update', requiresAuth(), asyncWrapper(async (req, res) => {
     await todo.update({ name })
     return res.status(200).send({ success: true, message: 'Updated successfully' })
 }))
-router.post('/delete', requiresAuth(), asyncWrapper(async (req, res) => {
-    const { jwt: { id: UserId }, id } = req.body;
+router.delete('/delete/:id', requiresAuth(), asyncWrapper(async (req, res) => {
+    const { jwt: { id: UserId }} = req.body;
+    const id = req.params.id
     const todo = await TodoList.findOne({ where: { id, UserId } })
     if (!todo) {
         return res.status(401).send({ success: false, message: 'Todolist not found' })

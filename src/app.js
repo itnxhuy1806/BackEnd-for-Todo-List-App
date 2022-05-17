@@ -1,4 +1,5 @@
 import express from "express"
+import cors from "cors"
 import environment from "./config/environment"
 import logger from "morgan"
 import errorsMiddleware from './middlewares/errors'
@@ -12,6 +13,7 @@ export default class App {
         this.app.engine('hbs', engines.handlebars)
         this.app.set('views', __dirname+'/views')
         this.app.set('view engine', 'hbs')
+        this.app.use(cors())
         this.app.use(cookieParser())
         this.app.use('/js', express.static(__dirname+'/js'))
         this.app.use(bodyParser.urlencoded({ extended: true }))
