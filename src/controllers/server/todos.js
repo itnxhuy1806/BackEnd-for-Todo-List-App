@@ -18,19 +18,19 @@ router.post('/create', requiresAuth(), asyncWrapper(async (req, res) => {
     if (todo) {
         return res.status(401).send({ success: false, message: 'TodoList name already exists, please chose another name' })
     }
-    let newTodo = await TodoList.create({ name, UserId })
-    return res.status(200).send({ success: true, message: 'Added successfully', data: newTodo })
+    await TodoList.create({ name, UserId })
+    return res.status(200).send({ success: true, message: 'Added successfully'})
 }))
 
-router.post('/detail/:id', requiresAuth(), asyncWrapper(async (req, res) => {
+router.get('/detail/:id', requiresAuth(), asyncWrapper(async (req, res) => {
     const { jwt: { id: UserId }} = req.body;
     const id = req.params.id
     const todo = await TodoList.findOne({ where: { id, UserId } })
-    const task = await Task.findAll({ where: { TodoListId: id } })
+    const tasks = await Task.findAll({ where: { TodoListId: id } })
     if (!todo) {
         return res.status(401).send({ success: false, message: 'Todolist not found' })
     }
-    return res.status(200).send({ success: true, data: { todo, task } })
+    return res.status(200).send({ success: true, data: { todo, tasks } })
 }))
 
 router.patch('/update/:id', requiresAuth(), asyncWrapper(async (req, res) => {
