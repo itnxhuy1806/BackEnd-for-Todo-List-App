@@ -7,7 +7,7 @@ import taskRouter from './tasks'
 const router = Router()
 
 router.use('/users', userRouter)
-router.use(tokenRouter)
+router.use('/token',tokenRouter)
 router.use('/todos', todoRouter)
 router.use('/tasks', taskRouter)
 

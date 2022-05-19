@@ -35,11 +35,13 @@ router.get('/detail/:id', requiresAuth(), asyncWrapper(async (req, res) => {
 
 router.patch('/update/:id', requiresAuth(), asyncWrapper(async (req, res) => {
     const { jwt: { id: UserId }, name } = req.body;
+    console.log(req.body)
+    if(!name)
+        return res.status(401).send({ success: false, message: 'USndefine name' })
     const id = req.params.id
     const todo = await TodoList.findOne({ where: { id, UserId } })
-    if (!todo) {
+    if (!todo) 
         return res.status(401).send({ success: false, message: 'Todolist not found' })
-    }
     await todo.update({ name })
     return res.status(200).send({ success: true, message: 'Updated successfully' })
 }))

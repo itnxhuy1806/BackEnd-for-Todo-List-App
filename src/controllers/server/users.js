@@ -62,9 +62,8 @@ router.post('/login', asyncWrapper(async (req, res) => {
 
 }))
 
-router.post('/logout', requiresAuth(), asyncWrapper(async (req, res) => {
+router.get('/logout', requiresAuth(), asyncWrapper(async (req, res) => {
     const { jwt: { email, username } } = req.body;
-    console.log('req', req.body)
     const user = await User.findOne({ where: { email, username }, include: RefreshToken });
     user.RefreshToken.token = null;
     await user.RefreshToken.save();
