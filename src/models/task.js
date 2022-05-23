@@ -20,6 +20,15 @@ export default (sequelize) => {
                     },
                 },
             },
+            description: {
+                type: DataTypes.STRING(100),
+                validate: {
+                    len: {
+                        args: [1, 255],
+                        msg: 'Task content must contain between 2 and 50 characters',
+                    },
+                },
+            },
             checked:{
                 type: DataTypes.BOOLEAN
             }

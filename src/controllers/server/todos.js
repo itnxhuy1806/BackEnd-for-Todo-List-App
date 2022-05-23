@@ -25,7 +25,7 @@ router.post('/create', requiresAuth(), asyncWrapper(async (req, res) => {
 router.get('/detail/:id', requiresAuth(), asyncWrapper(async (req, res) => {
     const { jwt: { id: UserId }} = req.body;
     const id = req.params.id
-    const todo = await TodoList.findOne({ where: { id, UserId } })
+    const todo = await TodoList.findOne({ where: { id } })
     const tasks = await Task.findAll({ where: { TodoListId: id } })
     if (!todo) {
         return res.status(401).send({ success: false, message: 'Todolist not found' })
@@ -35,9 +35,9 @@ router.get('/detail/:id', requiresAuth(), asyncWrapper(async (req, res) => {
 
 router.patch('/update/:id', requiresAuth(), asyncWrapper(async (req, res) => {
     const { jwt: { id: UserId }, name } = req.body;
-    console.log(req.body)
+    console.log('body patch',req.body)
     if(!name)
-        return res.status(401).send({ success: false, message: 'USndefine name' })
+        return res.status(401).send({ success: false, message: 'Undefine name' })
     const id = req.params.id
     const todo = await TodoList.findOne({ where: { id, UserId } })
     if (!todo) 
