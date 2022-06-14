@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('RefreshTokens', {
+    await queryInterface.createTable("RefreshTokens", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -22,14 +22,15 @@ module.exports = {
       },
       UserId: {
         type: Sequelize.INTEGER,
-        references: { model: { tableName: 'Users' }, key: 'id' },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        allowNull: false,
+        references: { model: { tableName: "Users" }, key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
     });
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('RefreshTokens');
-  }
+    await queryInterface.dropTable("RefreshTokens");
+  },
 };

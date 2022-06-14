@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('TodoLists', {
+    await queryInterface.createTable("TodoLists", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -10,6 +10,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       name: {
+        allowNull: false,
         type: Sequelize.STRING(50),
       },
       createdAt: {
@@ -22,14 +23,15 @@ module.exports = {
       },
       UserId: {
         type: Sequelize.INTEGER,
-        references: { model: { tableName: 'Users' }, key: 'id' },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        allowNull: false,
+        references: { model: { tableName: "Users" }, key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
     });
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('TodoLists');
-  }
+    await queryInterface.dropTable("TodoLists");
+  },
 };
